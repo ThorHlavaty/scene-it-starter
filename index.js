@@ -21,7 +21,7 @@ function saveToWatchlist(imdbID) {
 document.addEventListener("DOMContentLoaded", function () {
   function renderMovies(searchTerm) {
     for (let index = 0; index < searchTerm.length; index++) {
-      const movie = searchTerm[index];
+      const meal = searchTerm[index];
       let indicator = document.createElement("li");
       const caption = document.createElement("div");
       const title = document.createElement("h5");
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       thePoster.setAttribute("class", "d-block w-12");
       thePoster.style.width = "100%";
-      thePoster.setAttribute("src", `${movie.Poster}`);
+      thePoster.setAttribute("src", meal.strMealThumb);
       document.getElementById("posterLocation").appendChild(theMovie);
-      title.textContent = `${movie.Title}`;
-      year.textContent = `${movie.Year}`;
+      title.textContent = meal.strMeal;
+      // year.textContent = `${movie.Year}`;
       addMe.textContent = "Add Me!";
-      addMe.setAttribute("onclick", `saveToWatchlist('${movie.imdbID}')`);
+      // addMe.setAttribute("onclick", `saveToWatchlist('${searchTerm.idMeal}')`);
       theMovie.appendChild(caption);
       caption.appendChild(title);
       caption.appendChild(year);
@@ -66,9 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchTerm = $(".search-bar").val();
     let encodedSearch = encodeURIComponent(searchTerm);
     axios
-      .get(`http://www.omdbapi.com/?apikey=b43843a0&s=${encodedSearch}`)
+      .get(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodedSearch}`
+      )
       .then(function (response) {
-        let fullSearch = response.data.Search;
+        let fullSearch = response.data.meals;
+        console.log(fullSearch);
         renderMovies(fullSearch);
       });
   });
